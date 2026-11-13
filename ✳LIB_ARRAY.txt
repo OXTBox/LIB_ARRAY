@@ -1,0 +1,40 @@
+  - The README has a Foundations table. Each row gives a foundational game, where it lives, what it teaches, and what it adds to
+    PROMPT_GLAZE. Amazing Couple is the first row: the heroes, their walk and follow, and the maze.
+  - I removed the copy of the demo from PROMPT_GLAZE (25eaca1), so there's only one version of it to maintain. The repo still has the
+    early history, and PROMPT_GLAZE's own joining code will go there as it's written.
+  - I updated the LIB_MOCAP README (902d5a0) and my memory notes to match.
+
+  The bench didn't open its window when it started; only the small server window came up. I opened it myself. If that keeps happening,
+  the launcher's start-up is worth a look.
+
+✻ Baked for 2m 32s · done 7:10 PM
+
+※ recap: PROMPT & GLAZE is now the umbrella game, and its first foundational demo, Amazing Couple, runs in both Vibecode3D and xt3d.
+  Next, you review the LIB_GAMES `amazing-couple` branch so I can merge it to main.
+
+❯ /model
+  ⎿  Set model to Fable 5.2 and saved as your default for new sessions with low effort
+
+❯ Write an instruction template for Fable 5 to Bring the whole of this  project: "\\wsl$\Ubuntu\home\igame3d\projects"  to a state of
+  easily opening and editing seperately and/or as a whole, independent of as many external assets or code as possible, the various
+  games and procedures of the LIB_ARRAY , ie, the whole of the projects we are working on now. Write a LONG Todo list, of BASIC
+  elements we have covered and need yet to cover for a functional public facing application of any and all of the LIB_ARRAY projects,
+  you will run the local MCP here with help from Spark and myself. Include Spark and Myself task in the todo list , I will be able to
+  absorb them and process them  better if they come FAR in advance of doing it is required. WRite instructions for opus and to work
+  through material that doesn't require the most powerful vector math ever made, I need Fable to structure this project into a long
+  term complete suite of game development, programming and AI integration assets. I am running out of minutes, so read all the claude
+  written .md files here and start writing  orchestration of LIB_ARRAY: the SUM of all the parts!
+
+  Ran 1 shell command
+  ⎿  You've hit your 5-hour limit · resets 10pm (America/Los_Angeles)
+
+● Usage limit reached · continuing automatically at 10pm · esc to cancel
+
+✻ Sautéed for 6s · done 7:37 PM
+                                                                                               ✔ Update installed · Restart to update
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ 
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⚠ Usage limit reached · limit resets 10pm
+    Continuing automatically at 10pm · Esc to cancel · /usage-credits to continue now
+  ⏵⏵ auto mode on (shift+tab to cycle)

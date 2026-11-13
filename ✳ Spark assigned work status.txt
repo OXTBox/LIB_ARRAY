@@ -1,0 +1,35 @@
+    SAID, the NEVER TYPE LAUNCH rule, DAMN STRAIGHT, every typo yell, and the LAUNCH
+    trap. Missile trails and map labels hide during a close-up and come back with the
+    map.
+  - His face is a file: Thrmnlra/Data/Faces/sarge_shout1.txt and sarge_shout2.txt,
+    plain 48 × 26 grids of 0s and 1s. You can redraw him in any text editor.
+
+  Heads up:
+  - Console at the top: 4 lines just under the status bar. Your input line stays on
+    its bottom row while new messages slide in above it, so it never scrolls away.
+  - Targets on the map only: the table is gone from the console; you type the names
+    you see over the sites. Labels near the edge stay on screen.
+  - "MISSILES OUTBOUND" is a fixed line at the top edge of the map.
+  - Titles: ATTENTION and BASIC TRAINING flash in the middle of the screen instead of
+    sitting at the top.
+  - Bigger world: the camera is closer, so the map fills the screen from under the
+    console nearly to the bottom. The two corner bases moved inward to stay in view.
+
+  Problems: frame rate is about 20–23 FPS on the map and dips to about 15 during a
+  close-up.
+
+  Not checked: the Intro's launch prompt now sits at the top under the DEFCON board,
+  but I haven't played through to it since the move. The same goes for the Map's
+  recall-and-detonate stage under the new layout. I tested the Trainer's opening (wide
+  shot and close-up) and the Map's targeting.
+
+  Another session renamed Heroes to Amazing Couple and checked out the amazing-couple
+  branch. The Sarge's clip didn't move with it; it's still Animazoo_hands_on_hips in
+  LIB_MOCAP's library.
+
+
+  ❯ /logout                     Sign out from your Anthropic account
+──────────────────────────────────────────────────────────────────────────────────────
+❯ /logout
+──────────────────────────────────────────────────────────────────────────────────────
+  ⏵⏵ auto mode on (shift+tab to cycle)
