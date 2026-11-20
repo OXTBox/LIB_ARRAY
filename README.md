@@ -10,3 +10,7 @@ the whole array; the rules and the map of every LIB are in `LIB_SYSTEM/LIB_ALPHA
 | `Notes To Claude 756PM_11_12_2026.txt` | the owner's notes that started LIB_ALPHA (window titles, LIB_OMEGA) |
 | `✳LIB_ARRAY.txt` | a saved session transcript: the request for the whole-project TODO list |
 | `✳ Spark assigned work status.txt` | a saved status report of Spark's assigned work |
+
+## Licence
+
+MIT (see `LICENSE`), Copyright (c) 2026 xAction.
