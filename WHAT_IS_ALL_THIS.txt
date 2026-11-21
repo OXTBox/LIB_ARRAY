@@ -1,0 +1,148 @@
+WHAT IS ALL THIS?
+=================
+The LIB_ARRAY in engine-programmer terms. Written 20 Nov 2026 (Claude). For how to start each
+program, see HOW_TO_USE_APPS.txt; for the owner's own words, Note_From_Owner.txt.
+
+THE SHORT VERSION
+-----------------
+A 3D game engine written in xTalk (the HyperCard family of languages: LiveCode Community 9,
+OpenXTalk, OXT-Beyond), plus a raylib bridge that runs the same games with a real GPU renderer,
+plus the tools around it: a tile/heightmap level editor, procedural game generation driven by
+ComfyUI node graphs, BVH motion capture, a stack <-> JSON round trip, and a pile of
+developer-experience apps. About 46 git repositories, one folder each, meant to sit side by side
+in one "projects" folder. Most of it was built in two weeks of November 2026, on top of 23 years
+of iGame3D history.
+
+THE TWO ENGINES (one game API, two back ends)
+---------------------------------------------
+                         same game script (a "card script")
+                                    |
+            +-----------------------+------------------------+
+            |                                                |
+   ENGINE 1: Vibecode3D (XT)                        ENGINE 2: xt3d (xRay)
+   pure xTalk, ~9,200 lines, 358 handlers           LiveCode Builder extension xt3d.lcb
+   software vector renderer:                        -> xt3d.dll (C shim) -> raylib 6.2
+   perspective divide by focal length,              493 of raylib's 619 functions wrapped,
+   near-plane clip, Liang-Barsky viewport           generated from raylib.h by gen_xt3d.py
+   clip, wireframe lines drawn as LiveCode          frames come back as LiveCode imageData,
+   graphics (Vectrex / 1983 Star Wars look)         or raylib draws in its own window
+   runs headless (servers, tests, CI)               needs Windows + a window
+
+   Engine 1's script is also used as the GAME LOGIC host inside the xt3d benches: the generator
+   xt3D_Raylib_Livecode_Bridge/tools/make_vibe_xt3d.py takes the Vibecode3D source plus a file of
+   overrides and writes testbench/vibe_engine_xt3d.livecodescript, which keeps the simulation and
+   hands the drawing to raylib. Never edit that generated file.
+
+   Both engines aim at the same graphics approach (vector look). raylib is there because nearly
+   every language already has a raylib binding; now xTalk has one too.
+
+THE ENGINE, BY SUBSYSTEM (handler prefixes in Engine 1)
+------------------------------------------------------
+   Engine.*  Init.*      boot, settings, info ("stepMS"), fixed 33 ms simulation step
+   Scene.*  Entities.* Entity.*   scene list, spawn/kill, transforms (Xform.*, Mat3.*)
+   Mesh.*                vertex/edge meshes, built in code or loaded (.wtf from iGame3D, .obj)
+   View.*  Viewport.*  Render.*   camera, projection, viewport, the draw pass
+   Cull.*                occlusion culling, gCullMode 0-3 (none / backface / boxes / hidden
+                         lines); in xt3d "hidden lines" = each closed part also drawn filled in
+                         the background colour, pushed back 0.3%, so the depth buffer hides lines
+   Collision.*           rule-based collisions -> Collision.Hit a,b
+   Particles.*  FX.*     particles and effects;  Weapon.* hitscan fire -> Game.OnKill
+   HUD.*  VectorText.*   2D overlay and stroke-font text drawn by the engine
+   Audio.*  Sound.*      sound (procedural effects come from LIB_SFX, rfxgen in an extension)
+   Menu.*  UI.*  Options.*   in-engine menus and settings
+   Game.*                the game-card host (below)
+   World axes: +X right, +Y DOWN (up is -Y), +Z forward. Globals g..., booleans b..., script
+   locals s..., temps t..., params p... (the owner's naming).
+
+A GAME IS ONE TEXT FILE
+-----------------------
+   LIB_GAMES/Vibecode3D_Games/Vibecode3D_Play_<Game>.livecodescript: the whole script of one
+   game "card". The engine owns the loop, rendering and menus; the card answers hooks:
+      Game.OnStart (build the world, starting clean)   Game.OnUpdate (every fixed step)
+      Game.OnClick x,y,button   Game.OnKill key,x,y,z   Game.OnPause / OnResume   Game.OnStop
+      Collision.Hit a,b
+   Every handler, mesh and HUD name is prefixed with the game's name (all games share one message
+   path). The header comment holds the title, controls and rules: the launchers read it.
+   Rules and a skeleton: Vibecode3D/LiveCode_Claude_Kit/kit/docs/game-cards.md.
+   55 such games exist (Thrmnlra, DeadDays, Vector Toss, Photon Ball, Nine Ball,
+   Squad Buggy ...). Learning path: LIB_HOWTO, 92 steps from one line on screen upward.
+
+LEVELS: CELLMAPS (bitmap -> 3D)
+-------------------------------
+   LIB_BIT: 1-bit grids as plain text ("1" filled), pure functions (rotate, flip, maze...).
+   A cellmap (LIB_BIT/editor/CELLMAP_V2.md) is a grid of glyph cells, each tagged (256 tags:
+   solid, colour, group) with FIVE heights: floor, ceiling, red, green, blue (100 = a full
+   hallway); plus links, objects and stacked maps (one level over another at a base height).
+   The BitEditor paints them; CellMap.Walk / LevelSegments turn one into level geometry for
+   either engine; LIB_EDITOR's example cards (E01..E15) each teach one editing method, after
+   classic editors (Forge, Anvil, the Tomb Raider Level Editor). iGame3D XT is the 2008
+   iGame3D editor remade on top of all this.
+
+PROCEDURAL GAMES WITHOUT AI AT RUN TIME: LIB_COMFY
+--------------------------------------------------
+   ComfyUI is used as a Blueprint-style node editor, not for images. Nodes are game parts
+   (court, ball, heroes, walls, break rules, palettes, mutations, "When" event/action nodes);
+   the Build Game node concatenates the xTalk script parts the chain needs and writes a
+   playable game file. Everything is seeded: a seed gives the same game, and generated maps are
+   checked for fairness and regenerated on failure. tools/make_game.py does the same with no
+   ComfyUI at all. The Comfy Games app browses, rates and plays the results.
+
+MOTION: LIB_MOCAP + LIB_BVH
+---------------------------
+   Any video -> MoCapAnything -> skeleton GLB + BVH -> mocap_lib.py scores, cleans and skins a
+   procedural body (GLB for xt3d) and writes a text "stick clip" Vibecode3D can play. LIB_BVH is
+   the clip library (Animazoo, FreeBVH/Truebones, iGame3D conversions). Games use clips by name
+   (e.g. DeadDays' climb / hang / recover at a ledge).
+
+TOOLING FOR AI-ASSISTED DEVELOPMENT
+-----------------------------------
+   LIB_MCP      an HTTP dev server inside LiveCode: run code, eval, compile-check scripts,
+                translated error log, snapshots; a CLI (lcmcp) and an MCP server, so Claude Code
+                or a local model can drive a live engine.
+   LIB_XTJSON   binary .livecode stacks -> JSON + script files and back, with a diff proving
+                nothing was lost: stacks become data any tool can read (and, one day, GUIs
+                regenerated in Python, Lua ...). xtalk_py holds the corpus of harvested scripts.
+   OXT-Beyond   the IDE; its MCP bridge lets Claude read and change open stacks with undo.
+   Headless tests  dozens of tNN tests run the real engine with no window (OXT-BEYOND/tests,
+                LIB_*/tests); games are also played on the real engine and photographed.
+   LIB_SPARK    a 4B local model drafting routine work (descriptions, outlines) that Claude checks.
+   LIB_LLM      (inside Vibecode3D) an async LM Studio / OpenAI-style client in pure xTalk.
+   LIB_TTRPG    a tabletop RPG table: a local model plays a "lazy DM"; LIB_GENERICA / LIB_GAD
+                generate worlds and Galactica-style strategy rules.
+
+THE LIB_* FAMILY (one repository each)
+--------------------------------------
+   Engines      Vibecode3D, xt3D_Raylib_Livecode_Bridge, LIB_ig3d (shared framework +
+                knowledge base of iGame3D), LIB_SFX (sound), LIB_RAYGUI (planned)
+   Content      LIB_GAMES, LIB_COMFY, LIB_MOCAP, LIB_BVH, LIB_LISTS (word lists), LIB_UNICODE
+                (one meaning per character; a character can name the procedure that builds it)
+   Levels/maps  LIB_BIT, LIB_TRACE (outline tracing), LIB_MAP, LIB_EDITOR
+   Shared code  LIB_DATA (the Data folder), LIB_GLOBALS (every global registered), LIB_THEME,
+                LIB_MENU, LIB_GUI, LIB_INPUT, LIB_PORTS, LIB_SCRIPTBLOCKS, LIB_TOOLBAR
+   Experiments  LIB_TTRPG, LIB_GAD, LIB_GENERICA, LIB_RTS, LIB_UPBGE, PROMPT_GLAZE (the umbrella
+                game design)
+   Dev & AI     LIB_MCP, LIB_XTJSON, xtalk_py, LIB_SPARK, LIB_DEV (boards, browsers),
+                LIB_HOWTO, LIB_TEST, LIB_TRACE, LIB_BUILD, LIB_BAT, LIB_BIN
+   House rules  LIB_SYSTEM (LIB_ALPHA.md = the rules and the map of every LIB; ISSUES/ = bugs)
+   Paperwork    LIB_ARRAY (the whole array; get_everything.sh), LIB_PUBLIC (public page,
+                installer, launcher), LIB_USERS (personas), LIB_LLMIN / LIB_LLMOUT (the AI's
+                inbox and done pile)
+
+WHERE TO START READING CODE
+---------------------------
+   1. LIB_SYSTEM/LIB_ALPHA.md                   the rules and the map
+   2. Vibecode3D/LiveCode_Claude_Kit/kit/CLAUDE.md and docs/game-cards.md   the engine contract
+   3. a small game: LIB_GAMES/Vibecode3D_Games/Vibecode3D_Play_Hunter.livecodescript
+   4. LIB_HOWTO/topics/                         build one up from nothing, step by step
+   5. xt3D_Raylib_Livecode_Bridge/README.md     the bridge, if C and raylib are your thing
+
+LICENCES
+--------
+   xTalk work: GPL-3.0 (built on the GPL LiveCode Community 9 engine). Python and other non-xTalk
+   material: MIT. Each repository has its LICENSE; mixed ones say which files are MIT.
+
+HONEST STATUS
+-------------
+   It works, and it is fun, but it has been used by one person. Expect absolute paths in a few
+   older tools, stacks that want the folder layout kept, and a lot of text. The Project Map
+   (LIB_DEV/ProjectMap) shows what is done, what is next and what is blocking, part by part.

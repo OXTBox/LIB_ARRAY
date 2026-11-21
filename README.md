@@ -11,6 +11,16 @@ the whole array; the rules and the map of every LIB are in `LIB_SYSTEM/LIB_ALPHA
 | `✳LIB_ARRAY.txt` | a saved session transcript: the request for the whole-project TODO list |
 | `✳ Spark assigned work status.txt` | a saved status report of Spark's assigned work |
 
+## Start here
+
+- `Note_From_Owner.txt`: where this came from, in the owner's words.
+- `WHAT_IS_ALL_THIS.txt`: the whole array in 3D-engine terms (the two engines, game cards,
+  cellmaps, ComfyUI generation, the LIB_* family).
+- `HOW_TO_USE_APPS.txt`: every program, stack and helper board, which file is current, and what
+  it needs around it.
+
+The same three files sit in the root of the `projects` folder (copies; the root is not a repository).
+
 ## Get everything
 
 All 46 projects live in the GitHub organisation **OXTBox**. Two ways to get them all at once:

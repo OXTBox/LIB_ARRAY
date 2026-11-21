@@ -1,0 +1,43 @@
+This project began 23 years ago.
+
+I picked it back up around November 6, 2026 and got Copilot, Gemini and ChatGPT involved, things progressed well with the 3D engine until free ChatGPT started rewriting things we'd already written ...with new function, handler, and variable  names, joy! So I moved to Claude Code and well...now look what we have 14 days later:
+
+Vibecode3D is an all Xtalk 3D game VECTOR game engine built in Livecode 9.6.3
+
+xt3d is the bridge to more powerful Raylib C Game Engine Library. We are going with the same graphics approach in both, Raylib is there because every other damned programming language on Earth has a Raylib bridge, now we have one to. Dagblasted!
+
+There is also rFx for sound generation
+
+ComfyUI integration for creating randomized procedural games. without AI at that late stage of the process. This system can certainly be rolled into  xTalk stacks, that's very obvious.
+
+XTJSON dissamebles Livecode stacks and rebuilds them, if desired, mostly its for the capturing of controls and codes to move to other goals, also the edge of my intent to be able to regenerate Livecode IDE GUI designs into native python, lua, etc. One of these days.
+
+There's a bitmap to 3D map editor, that got way out of hand, it's so complex now, used to be just a little doodle pad and an ethereal concept.
+
+BVH motion capture rigged skeleton support.
+
+Text based RPG Game/World Generator
+
+TTRPG LLM Dungeon Master/Player  experiment
+
+iGame3D conversions and adaptations
+
+A lot of utilities, like the Project-Map stack , incredibley helpful.
+The Priority Tube for keeping you and your LLM notified of what there is to do and how soon it should be done. See LIB_DEV for those.
+
+Of course can't leave out LIB_LLM that gets used extensively by Claude to do all that Claude do. As well as LIB_SPARK for telling local LLM Spark what to do, (Claude still has to mind it and correct it). The 2gb or 4gb Spark is not included, naturally. BYOLLM
+
+As with so many projects like this "Life Happens"
+Tragedy has befallen my family and taken it's toll on my ability to keep up with the scope of the project. I don't know if I can continue but there's no sense in keeping it under wraps. 
+
+The project "LIB_ARRAY" is at a point anyone can do very fun game projects with it, once they get over the hurdle of comprehending any of it. 
+
+It's not anywhere near 'user friendly' yet as it's never been tested by more than one living person.  
+
+To sum things up: here it is, a game engine for xtalk. Qui Bono?
+
+Sincerely,
+William Griffin
+Simi Valley, California
+11-20-2026
+oxtbox@igame3d.com
